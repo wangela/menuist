@@ -5,7 +5,7 @@
 <body>
   <div class = 'pane'>
 		<div class = 'header'>
-      <h1>Restaurant Menus</h1>
+      <h1>Menuist: Restaurant Menus</h1>
 
       {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -22,17 +22,14 @@
       <div>
 
       <p>
-      <h3><a href='{{url_for('restaurantMenu', restaurant_id = r.id) }}'>{{r.name}}</a></h3>
-			<a href='{{url_for('restaurantMenu', restaurant_id = r.id) }}'>Edit</a><br> <!-- replace with editRestaurant -->
-			<a href='{{url_for('restaurantMenu', restaurant_id = r.id) }}'>Delete</a> <!-- replace with deleteRestaurant -->
+      <a href='{{url_for('showMenu', restaurant_id = r.id) }}'>{{r.name}}</a>
       </p>
       </div>
 
     {% endfor %}
 
   <p>
-  <a href = '#'> <!-- 'newRestaurant' -->
-  Add New Restaurant</a>
+  <a href = '{{url_for('addRestaurant')}}'>Add a Restaurant</a>
   </p>
 </div>
 </body>
