@@ -42,7 +42,7 @@ def addRestaurant():
         new_restaurant = Restaurant(name = new_name)
         session.add(new_restaurant)
         session.commit()
-        flash("Added {} to our retaurant database!".format(new_name))
+        flash("Added {} to our restaurant database!".format(new_name))
         return redirect(url_for('showRestaurants'))
     else:
         return render_template('addrestaurant.html')
@@ -51,13 +51,17 @@ def addRestaurant():
 def editRestaurant(restaurant_id):
     # output = "This page edits restaurant {}".format(restaurant_id)
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).first()
+    flashMessage = ""
     if request.method == 'POST':
         if request.form['name']:
             old_name = restaurant.name
             new_name = request.form['name']
             restaurant.name = new_name
+            flashMessage += "Renamed {} to {}.".format(old_name, new_name)
         session.add(restaurant)
         session.commit()
+        if flashMessage:
+            flash(flashMessage)
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     else:
         return render_template('editrestaurant.html', restaurant = restaurant)
@@ -70,6 +74,7 @@ def deleteRestaurant(restaurant_id):
         old_name = restaurant.name
         session.delete(restaurant)
         session.commit()
+        flash("Successfully deleted {} from Menuist.".format(old_name))
         return redirect(url_for('showRestaurants'))
     else:
         return render_template('deleterestaurant.html', restaurant = restaurant)
@@ -93,6 +98,7 @@ def addMenuItem(restaurant_id):
         new_item = MenuItem(name = new_name, description = new_description, price = new_price, restaurant_id = restaurant_id)
         session.add(new_item)
         session.commit()
+        flash("Added {} to the menu. Sounds delicious!".format(new_name))
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     else:
         return render_template('addmenuitem.html', restaurant = restaurant)
@@ -107,12 +113,15 @@ def editMenuItem(restaurant_id, menu_id):
         if request.form['name']:
             new_name = request.form['name']
             item.name = new_name
+            flash("Renamed {} to {} on the menu.".format(old_name, new_name))
         if request.form['description']:
             new_description = request.form['description']
             item.description = new_description
+            flash("Updated description.")
         if request.form['price']:
             new_price = request.form['price']
             item.price = new_price
+            flash("Updated price.")
         session.add(item)
         session.commit()
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
@@ -128,6 +137,7 @@ def deleteMenuItem(restaurant_id, menu_id):
         old_name = item.name
         session.delete(item)
         session.commit()
+        flash("Deleted {} from the {} menu.".format(old_name, restaurant.name))
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     else:
         return render_template('deletemenuitem.html', restaurant = restaurant, item = item)
