@@ -87,12 +87,15 @@ def editMenuItem(restaurant_id, menu_id):
     item = session.query(MenuItem).filter_by(menu_id = menu_id)
     if request.method == 'POST':
         old_name = item.name
-        new_name = request.form['name']
-        new_description = request.form['description']
-        new_price = request.form['price']
-        item.name = new_name
-        item.description = new_description
-        item.price = new_price
+        if request.form['name']:
+            new_name = request.form['name']
+            item.name = new_name
+        if request.form['description']:
+            new_description = request.form['description']
+            item.description = new_description
+        if request.form['price']:
+            new_price = request.form['price']
+            item.price = new_price
         session.add(item)
         session.commit()
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))

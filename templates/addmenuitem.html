@@ -1,9 +1,13 @@
 <html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
 <body>
 <h1>Add to {{restaurant.name}} Menu</h1>
 
 <p>Add the details of your dish.</p>
-<form action="{{url_for('addMenuItem', restaurant_id = restaurant.id )}}" method = 'POST'>
+<form action='{{url_for('addMenuItem', restaurant_id = restaurant.id )}}' method = 'POST'>
 
 <p>Name of Dish*: </p>
 <input type='text' size='30' name='name'>

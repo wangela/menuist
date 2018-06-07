@@ -1,11 +1,11 @@
 <html>
 <head>
-	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	<link rel=stylesheet type=text/css href='{{ url_for('static', filename='styles.css') }}'>
 </head>
 
 <body>
 <h1>Edit {{item.name}} at {{restaurant.name}}</h1>
-<form action= "{{url_for('editMenuItem', restaurant_id = restaurant.id, menu_id=item.id)}}" method = 'POST'>
+<form action= '{{url_for('editMenuItem', restaurant_id = restaurant.id, menu_id=item.id)}}' method = 'POST'>
 
 <p>Name:</p>
 <input type = 'text' size='30' name='name' placeholder='{{item.name}}'>
@@ -14,10 +14,13 @@
 <textarea rows='2' cols='30' name='description'>{{item.description}}</textarea>
 
 <p>Price*: $</p>
-<input type='text' size='30' name='price' placeholder='{{item.price}}>
+<input type='text' size='30' name='price' placeholder='{{item.price}}'>
 
 <input type='submit' value='Edit'>
 </form>
-<a href= '{{url_for('restaurantMenu', restaurant_id = item.restaurant_id)}}'>Cancel</a>
+<a href='{{url_for('showMenu', restaurant_id = item.restaurant_id)}}'>Cancel</a>
+
+<p>
+Or click here to <a href='{{url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_id = item.id)}}' delete this menu item</a>.
 </body>
 </html>
