@@ -8,19 +8,20 @@
 <form action= '{{url_for('editMenuItem', restaurant_id = restaurant.id, menu_id=item.id)}}' method = 'POST'>
 
 <p>Name:</p>
-<input type = 'text' size='30' name='name' placeholder='{{item.name}}'>
+<input type = 'text' size='60' name='name' placeholder='{{item.name}}'>
 
 <p>Description*: </p>
-<textarea rows='2' cols='30' name='description'>{{item.description}}</textarea>
+<textarea rows='2' cols='60' name='description'>{{item.description}}</textarea>
 
-<p>Price*: $</p>
-<input type='text' size='30' name='price' placeholder='{{item.price}}'>
+<p>Price*: $
+<input type='text' size='11' name='price' placeholder='{{item.price}}'>
+</p>
 
 <input type='submit' value='Edit'>
 </form>
 <a href='{{url_for('showMenu', restaurant_id = item.restaurant_id)}}'>Cancel</a>
 
 <p>
-Or click here to <a href='{{url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_id = item.id)}}' delete this menu item</a>.
+Or click here to <a href='{{url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_id = item.id)}}'>delete this menu item</a>.
 </body>
 </html>

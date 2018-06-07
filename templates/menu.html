@@ -5,7 +5,7 @@
 <body>
   <div class = 'pane'>
 		<div class = 'header'>
-      <h1>{{restaurant.name}}</h1>%nbsp;<em><a href='{{url_for('editRestaurant', restaurant_id = restaurant.id)}}'>Edit</a></em>
+      <h1>{{restaurant.name}}</h1>&nbsp;<em><a href='{{url_for('editRestaurant', restaurant_id = restaurant.id)}}'>Edit</a></em>
 
       {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -18,23 +18,36 @@
       {% endwith %}
     </div>
 
-		<table>
-    {% for i in items %}
-      <tr>
-      	<td>
-					<a href='{{url_for('editMenuItem', restaurant_id = restaurant.id, menu_id = i.id) }}'><b>{{i.name}}</b></a><br>
-					<em>{{i.description}}</em><br>
-				</td>
-				<td>{{i.price}}
-				</td>
+		{% if items.count() > 0 %}
+			<table>
+		    {% for i in items %}
+		      <tr>
+		      	<td>
+							<a href='{{url_for('editMenuItem', restaurant_id = restaurant.id, menu_id = i.id) }}'><b>{{i.name}}</b></a><br>
+							<em>{{i.description}}</em><br>
+						</td>
+						<td>
+							{% if i.price[0] == '$' %}
+								{{i.price}}
+							{% else %}
+								${{i.price}}
+							{% endif %}
+						</td>
 
-      </p>
-		</tr>
+		      </p>
+				</tr>
 
-    {% endfor %}
+		    {% endfor %}
+			</table>
+		{% else %}
+			<p>
+				There's nothing on the {{restaurant.name}} menu yet.
+			</p>
+		{% endif %}
 
   <p>
-  	<a href ='{{url_for('addwMenuItem', restaurant_id = restaurant.id) }}'>Add to menu</a>
+  	<a href ='{{url_for('addMenuItem', restaurant_id = restaurant.id) }}'>Add to menu</a><br>
+		<a href='{{url_for('showRestaurants')}}'>Back to restaurant list</a>
   </p>
 </div>
 </body>

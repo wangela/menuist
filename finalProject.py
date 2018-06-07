@@ -11,7 +11,24 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+# Support API requests (GET request)
+@app.route('/restaurants/JSON')
+def showRestaurantsJSON():
+    restaurants = session.query(Restaurant).all()
+    return jsonify(Restaurants=[r.serialize for r in restaurants])
 
+@app.route('/restaurant/<int:restaurant_id>/JSON')
+@app.route('/restaurant/<int:restaurant_id>/menu/JSON')
+def showMenuJSON(restaurant_id):
+    items = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
+    return jsonify(MenuItems = [i.serialize for i in items])
+
+@app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/JSON')
+def showMenuItemJSON(restaurant_id, menu_id):
+    item = session.query(MenuItem).filter_by(id = menu_id).first()
+    return jsonify(MenuItem = item.serialize)
+
+# Regular routing
 @app.route('/')
 @app.route('/restaurants/')
 def showRestaurants():
@@ -33,7 +50,7 @@ def addRestaurant():
 @app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
 def editRestaurant(restaurant_id):
     # output = "This page edits restaurant {}".format(restaurant_id)
-    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).first()
     if request.method == 'POST':
         if request.form['name']:
             old_name = restaurant.name
@@ -48,7 +65,7 @@ def editRestaurant(restaurant_id):
 @app.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET', 'POST'])
 def deleteRestaurant(restaurant_id):
     # output = "This page deletes restaurant {}".format(restaurant_id)
-    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).first()
     if request.method == 'POST':
         old_name = restaurant.name
         session.delete(restaurant)
@@ -83,8 +100,8 @@ def addMenuItem(restaurant_id):
 @app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/edit/', methods=['GET', 'POST'])
 def editMenuItem(restaurant_id, menu_id):
     # output = "This page edits menu item {} for restaurant {}".format(menu_id, restaurant_id)
-    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
-    item = session.query(MenuItem).filter_by(menu_id = menu_id)
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).first()
+    item = session.query(MenuItem).filter_by(id = menu_id).first()
     if request.method == 'POST':
         old_name = item.name
         if request.form['name']:
@@ -105,15 +122,15 @@ def editMenuItem(restaurant_id, menu_id):
 @app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/delete/', methods=['GET', 'POST'])
 def deleteMenuItem(restaurant_id, menu_id):
     # output = "This page deletes menu item {} for restaurant {}".format(menu_id, restaurant_id)
-    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
-    item = session.query(MenuItem).filter_by(menu_id = menu_id)
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).first()
+    item = session.query(MenuItem).filter_by(id = menu_id).first()
     if request.method == 'POST':
         old_name = item.name
         session.delete(item)
         session.commit()
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     else:
-        return render_template('deletemenuitem.html', item = item)
+        return render_template('deletemenuitem.html', restaurant = restaurant, item = item)
 
 
 if __name__ == '__main__':

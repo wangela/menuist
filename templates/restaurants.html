@@ -18,15 +18,22 @@
       {% endwith %}
     </div>
 
-    {% for r in restaurants %}
-      <div>
+		{% if restaurants|length > 0 %}
+			{% for r in restaurants %}
+	      <div>
 
-      <p>
-      <a href='{{url_for('showMenu', restaurant_id = r.id)}}'>{{r.name}}</a>
-      </p>
-      </div>
+	      <p>
+	      <a href='{{url_for('showMenu', restaurant_id = r.id)}}'>{{r.name}}</a>
+	      </p>
+	      </div>
 
-    {% endfor %}
+	    {% endfor %}
+			<hr>
+		{% else %}
+			<p>
+				There are no restaurants on Menuist yet.
+			</p>
+		{% endif %}
 
   <p>
   <a href='{{url_for('addRestaurant')}}'>Add a Restaurant</a>

@@ -10,15 +10,18 @@
 <form action='{{url_for('addMenuItem', restaurant_id = restaurant.id )}}' method = 'POST'>
 
 <p>Name of Dish*: </p>
-<input type='text' size='30' name='name'>
+<input type='text' size='60' name='name'>
 
 <p>Description of Dish*: </p>
-<textarea rows='2' cols='30' name='description'>
+<textarea rows='2' cols='60' name='description'></textarea>
 
-<p>Price of Dish*: $</p>
-<input type='text' size='30' name='price' placeholder='0.00'>
+<p>Price of Dish*:<br>
+$<input type='text' size='11' name='price' placeholder='0.00'
+</p>
 
+<p>
 <input type='submit' value='Create'>
+</p>
 
 </form>
 <a href='{{url_for('showMenu', restaurant_id = restaurant.id)}}'>Cancel</a>
