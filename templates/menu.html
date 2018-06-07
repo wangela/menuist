@@ -5,7 +5,7 @@
 <body>
   <div class = 'pane'>
 		<div class = 'header'>
-      <h1>{{restaurant.name}}</h1>
+      <h1>{{restaurant.name}}</h1>%nbsp;<em><a href='{{url_for('editRestaurant', restaurant_id = restaurant.id)}}'>Edit</a></em>
 
       {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -18,23 +18,24 @@
       {% endwith %}
     </div>
 
+		<table>
     {% for i in items %}
-      <div>
+      <tr>
+      	<td>
+					<a href='{{url_for('editMenuItem', restaurant_id = restaurant.id, menu_id = i.id) }}'><b>{{i.name}}</b></a><br>
+					<em>{{i.description}}</em><br>
+				</td>
+				<td>{{i.price}}<br>
+					<a href = '{{url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_id = i.id ) }}'><em>Delete</em></a>
+				</td>
 
-      <p>
-      <b>{{i.name}}</b><br>
-      {{i.description}}<br>
-      {{i.price}}<br>
-      <a href='{{url_for('editMenuItem', restaurant_id = restaurant.id, menu_id = i.id) }}'>Edit</a><br>
-      <a href = '{{url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_id = i.id ) }}'>Delete</a>
       </p>
-      </div>
+		</tr>
 
     {% endfor %}
 
   <p>
-  <a href = '{{url_for('newMenuItem', restaurant_id = restaurant.id) }}'>
-  Add to menu</a>
+  	<a href = '{{url_for('addwMenuItem', restaurant_id = restaurant.id) }}'>Add to menu</a>
   </p>
 </div>
 </body>

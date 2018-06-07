@@ -1,16 +1,23 @@
 <html>
 <body>
-<h1> New Menu Item for {{restaurant.name}}</h1>
+<h1>Add to {{restaurant.name}} Menu</h1>
 
-<form action="{{url_for('newMenuItem', restaurant_id = restaurant.id )}}" method = 'POST'>
+<p>Add the details of your dish.</p>
+<form action="{{url_for('addMenuItem', restaurant_id = restaurant.id )}}" method = 'POST'>
 
-<p>Name:</p>
-
+<p>Name of Dish*: </p>
 <input type='text' size='30' name='name'>
+
+<p>Description of Dish*: </p>
+<textarea rows='2' cols='30' name='description'>
+
+<p>Price of Dish*: $</p>
+<input type='text' size='30' name='price' placeholder='0.00'>
 
 <input type='submit' value='Create'>
 
 </form>
+<a href='{{url_for('showMenu', restaurant_id = restaurant.id)}}'>Cancel</a>
 
 </body>
 </html>
